@@ -1,0 +1,60 @@
+datasource db{
+    provider = "postgresql"
+    url = env("DATABASE_URL")
+}
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  Beginner
+  Experienced
+}
+
+enum TrackSource {
+  Upload
+  iTunes
+}
+
+model User {
+  id String @id @default(uuid())
+  email String @unique
+  username String @unique
+  passwordHash String
+  role Role @default(Beginner)
+  createdAt DateTime @default(now())
+  tracks Track[]
+  mixSessions  MixSession[]
+  settings UserSettings?
+}
+
+model Track {
+  id String @id @default(uuid())
+  title String
+  artist String
+  album String?
+  duration Int         // duration in seconds
+  fileUrl String
+  artworkUrl String?
+  source TrackSource
+  ownerId String? // empty/null for seeded tracks
+  owner User? @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+}
+
+model MixSession {
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trackA String
+  trackB String
+  startedAt DateTime  @default(now())
+  endedAt DateTime?
+  effectUsed String
+}
+
+model UserSettings {
+  userId String @id
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  preferredEffect String @default("lowpass")
+  gestureSensitivity Float @default(1.0)
+}
