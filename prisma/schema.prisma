@@ -11,11 +11,6 @@ enum Role {
   Experienced
 }
 
-enum TrackSource {
-  Upload
-  iTunes
-}
-
 model User {
   id String @id @default(uuid())
   email String @unique
@@ -36,20 +31,23 @@ model Track {
   duration Int         // duration in seconds
   fileUrl String
   artworkUrl String?
-  source TrackSource
-  ownerId String? // empty/null for seeded tracks
+  ownerId String? // null = starter track, visible to every user
   owner User? @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  mixSessionsAsTrackA MixSession[] @relation("TrackA")
+  mixSessionsAsTrackB MixSession[] @relation("TrackB")
 }
 
 model MixSession {
   id String @id @default(uuid())
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  trackA String
-  trackB String
+  trackAId String
+  trackA Track @relation("TrackA", fields: [trackAId], references: [id], onDelete: Cascade)
+  trackBId String
+  trackB Track @relation("TrackB", fields: [trackBId], references: [id], onDelete: Cascade)
   startedAt DateTime  @default(now())
   endedAt DateTime?
-  effectUsed String
+  effectUsed String?
 }
 
 model UserSettings {

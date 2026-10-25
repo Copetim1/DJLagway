@@ -1,19 +1,18 @@
 import{ Router, Response } from 'express';
-import{ PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma';
 import{ requireAuth, AuthenticatedRequest } from '../middleware/auth';
 
 const router = Router();
-const prisma = new PrismaClient();
-// GET /tracks - returns user's personal uploads + seeded tracks
+// GET /tracks - returns the starter library + the logged-in user's uploads
 router.get('/', requireAuth, async (req: AuthenticatedRequest, res: Response) =>{
   try{
-    const userId = req.user?.userId;
+    const userId = req.user!.userId;
 
     const tracks = await prisma.track.findMany({
       where:{
         OR: [
          { ownerId: userId },       // User's own uploads
-         { source: 'iTunes' },      // Public seeded tracks
+         { ownerId: null },         // Starter library
         ],
       },
       orderBy:{ title: 'asc' },

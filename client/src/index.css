@@ -1,0 +1,29 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-stage: #0b0d12;
+  --color-panel: #151922;
+  --color-edge: #252b38;
+  --color-deck-a: #38bdf8;
+  --color-deck-b: #fb923c;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-stage);
+  color: #e6e9ef;
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tabular figures keep the latency readout from jittering as digits change. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}

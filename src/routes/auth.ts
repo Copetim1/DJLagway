@@ -1,12 +1,11 @@
 import{ Router, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import{ PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma';
+import{ JWT_SECRET } from '../lib/config';
 import{ requireAuth, AuthenticatedRequest } from '../middleware/auth';
 
 const router = Router();
-const prisma = new PrismaClient();
-const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-key';
 
 // POST /auth/register
 router.post('/register', async(req, res) =>{
