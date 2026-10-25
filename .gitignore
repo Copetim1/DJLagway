@@ -3,3 +3,7 @@ dist/
 .env
 .DS_Store
 *.log
+
+# Vendored MediaPipe runtime + model (~44MB), produced by `npm run fetch-assets`.
+# Build input, not source — never commit it.
+client/public/mediapipe/

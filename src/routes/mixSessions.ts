@@ -1,25 +1,35 @@
 import { Router, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma';
 import { requireAuth, AuthenticatedRequest } from '../middleware/auth';
 
 const router = Router();
-const prisma = new PrismaClient();
+
+const trackSummary = { select: { title: true, artist: true, artworkUrl: true } };
 
 // POST /mix-sessions - Save a completed mix session entry
 router.post('/', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const userId = req.user?.userId;
-    const { trackA, trackB, effectUsed, startedAt, endedAt } = req.body;
+    const userId = req.user!.userId;
+    const { trackAId, trackBId, effectUsed, startedAt, endedAt } = req.body;
 
-    if (!trackA || !trackB || !effectUsed) {
-      return res.status(400).json({ error: 'Missing required mix session data' });
+    if (typeof trackAId !== 'string' || typeof trackBId !== 'string') {
+      return res.status(400).json({ error: 'trackAId and trackBId are required' });
+    }
+
+    // Both decks may hold the same track, so compare against the distinct ids.
+    const trackIds = [...new Set([trackAId, trackBId])];
+    const usableCount = await prisma.track.count({
+      where: { id: { in: trackIds }, OR: [{ ownerId: userId }, { ownerId: null }] },
+    });
+    if (usableCount !== trackIds.length) {
+      return res.status(400).json({ error: 'trackAId and trackBId must be your tracks or starter tracks' });
     }
 
     const mixSession = await prisma.mixSession.create({
       data: {
-        userId: userId!,
-        trackA,
-        trackB,
+        userId,
+        trackAId,
+        trackBId,
         effectUsed,
         startedAt: startedAt ? new Date(startedAt) : undefined,
         endedAt: endedAt ? new Date(endedAt) : new Date(),
@@ -35,10 +45,11 @@ router.post('/', requireAuth, async (req: AuthenticatedRequest, res: Response) =
 // GET /mix-sessions - Retrieve current user's past mix sessions
 router.get('/', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const userId = req.user?.userId;
+    const userId = req.user!.userId;
 
     const sessions = await prisma.mixSession.findMany({
       where: { userId },
+      include: { trackA: trackSummary, trackB: trackSummary },
       orderBy: { startedAt: 'desc' },
     });
 
