@@ -1,13 +1,5 @@
 @import 'tailwindcss';
 
-@theme {
-  --color-stage: #0b0d12;
-  --color-panel: #151922;
-  --color-edge: #252b38;
-  --color-deck-a: #38bdf8;
-  --color-deck-b: #fb923c;
-}
-
 html,
 body,
 #root {
@@ -16,22 +8,16 @@ body,
 
 body {
   margin: 0;
-  background: var(--color-stage);
-  color: #e6e9ef;
+  background: #ffffff;
+  color: #171717;
   font-family:
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Tabular figures keep the latency readout from jittering as digits change. */
+/* Tabular figures keep changing numbers from jittering. */
 .tnum {
   font-variant-numeric: tabular-nums;
-}
-
-/* Main page: blank white for now. */
-.main-page {
-  min-height: 100%;
-  background: #ffffff;
 }
 
 /* Login page */

@@ -2,7 +2,7 @@ import{ Router, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import prisma from '../lib/prisma';
-import{ JWT_SECRET } from '../lib/config';
+import{ JWT_SECRET, JWT_EXPIRES_IN } from '../lib/config';
 import{ requireAuth, AuthenticatedRequest } from '../middleware/auth';
 
 const router = Router();
@@ -64,7 +64,7 @@ router.post('/login', async(req, res) =>{
     const token = jwt.sign(
      { userId: user.id, role: user.role },
       JWT_SECRET,
-     { expiresIn: '7d' }
+     { expiresIn: JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'] }
     );
 
     return res.status(200).json({
