@@ -20,8 +20,18 @@ npm install
 cp .env.example .env        # then set JWT_SECRET to a long random string
 docker compose up -d        # optional: start the local Postgres from docker-compose.yml
 npx prisma db push          # create the tables from prisma/schema.prisma
-npm run dev
+npm install --prefix client
+cp client/.env.example client/.env.local   # set VITE_API_URL to the backend's address
+npm run dev                 # starts the backend and the client together
 ```
+
+`npm run dev` runs both halves in one terminal, with output labelled `[api]` and `[client]`.
+Open http://localhost:5173. Ctrl+C stops both. To run just one, use `npm run dev:server` or
+`npm run dev:client`.
+
+On macOS, port 5000 is often taken by AirPlay Receiver. If it is, set `PORT=3000` in `.env`
+and `VITE_API_URL=http://localhost:3000` in `client/.env.local`.
+
 ## Starter library
 
 Every user sees these songs alongside their own uploads. The MP3s live in
@@ -38,7 +48,9 @@ you use a different Postgres.
 
 | Command | What it does |
 | --- | --- |
-| `npm run dev` | Run the server with auto-reload |
+| `npm run dev` | Run the backend and client together, with auto-reload |
+| `npm run dev:server` | Run only the backend |
+| `npm run dev:client` | Run only the client |
 | `npm run build` | Compile TypeScript to `dist/` |
 | `npm start` | Run the compiled server |
 | `npm run prisma:generate` | Regenerate the Prisma client |

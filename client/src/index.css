@@ -1,13 +1,5 @@
 @import 'tailwindcss';
 
-@theme {
-  --color-stage: #0b0d12;
-  --color-panel: #151922;
-  --color-edge: #252b38;
-  --color-deck-a: #38bdf8;
-  --color-deck-b: #fb923c;
-}
-
 html,
 body,
 #root {
@@ -16,14 +8,91 @@ body,
 
 body {
   margin: 0;
-  background: var(--color-stage);
-  color: #e6e9ef;
+  background: #ffffff;
+  color: #171717;
   font-family:
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Tabular figures keep the latency readout from jittering as digits change. */
+/* Tabular figures keep changing numbers from jittering. */
 .tnum {
   font-variant-numeric: tabular-nums;
+}
+
+/* Login page */
+.login-page {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f5f7;
+  color: #1a1d23;
+  padding: 24px;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #d7dae0;
+  border-radius: 8px;
+  padding: 28px 24px;
+}
+
+.login-title {
+  margin: 0 0 20px;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.login-label {
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.login-input {
+  margin-bottom: 16px;
+  padding: 9px 10px;
+  font-size: 14px;
+  border: 1px solid #c3c7cf;
+  border-radius: 5px;
+  background: #fff;
+  color: #1a1d23;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #4a6cf7;
+}
+
+.login-button {
+  margin-top: 4px;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: #2b2f36;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background: #1a1d23;
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.login-error {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #c0392b;
 }

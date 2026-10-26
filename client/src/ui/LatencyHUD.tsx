@@ -1,20 +1,17 @@
 import { verdictFor, type LatencySnapshot } from '../metrics/latency';
 
 const VERDICT_COPY = {
-  go: { label: 'GO', tone: '#4ade80', note: 'Responsive enough to build on.' },
-  tune: { label: 'TUNE', tone: '#facc15', note: 'Usable, but budget tuning time.' },
-  stop: { label: 'STOP', tone: '#f87171', note: 'Rethink before committing the schedule.' },
-  unknown: { label: '—', tone: '#64748b', note: 'Not enough data yet.' },
+  go: 'GO: responsive enough to build on',
+  tune: 'TUNE: usable, but needs tuning',
+  stop: 'STOP: too slow, rethink before building on it',
+  unknown: 'Not enough data yet',
 } as const;
 
-function Row({ label, value, hint }: { label: string; value: string; hint?: string }) {
+function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-baseline justify-between gap-3 py-1">
-      <span className="text-xs text-slate-400">
-        {label}
-        {hint && <span className="ml-1 text-[10px] text-slate-600">{hint}</span>}
-      </span>
-      <span className="tnum text-sm text-slate-100">{value}</span>
+    <div className="flex justify-between py-1 text-sm">
+      <span className="text-neutral-500">{label}</span>
+      <span className="tnum">{value}</span>
     </div>
   );
 }
@@ -23,55 +20,31 @@ const ms = (n: number) => `${n.toFixed(1)} ms`;
 
 interface Props {
   snapshot: LatencySnapshot;
-  frameLoop: 'rvfc' | 'raf';
 }
 
-export function LatencyHUD({ snapshot, frameLoop }: Props) {
-  const verdict = VERDICT_COPY[verdictFor(snapshot)];
-
+export function LatencyHUD({ snapshot }: Props) {
   return (
-    <section className="rounded-xl border border-edge bg-panel p-4">
-      <header className="mb-2 flex items-center justify-between">
-        <h2 className="text-sm font-semibold tracking-wide text-slate-200">Latency</h2>
-        <span
-          className="rounded px-2 py-0.5 text-xs font-bold"
-          style={{ background: `${verdict.tone}22`, color: verdict.tone }}
-        >
-          {verdict.label}
-        </span>
-      </header>
-
-      <div className="divide-y divide-edge">
-        <Row label="Inference" value={ms(snapshot.inferenceMs)} hint="median" />
-        <Row label="Inference" value={ms(snapshot.inferenceP95Ms)} hint="p95" />
-        {snapshot.pipelineMeasurable ? (
-          <>
-            <Row label="Camera → audio" value={ms(snapshot.pipelineMs)} hint="median" />
-            <Row label="Camera → audio" value={ms(snapshot.pipelineP95Ms)} hint="p95" />
-          </>
-        ) : (
-          <Row label="Camera → audio" value="unavailable" hint={frameLoop} />
-        )}
+    <div>
+      <p className="mb-2 text-sm font-medium">{VERDICT_COPY[verdictFor(snapshot)]}</p>
+      <div className="divide-y divide-neutral-200">
+        <Row
+          label="Inference (median / p95)"
+          value={`${ms(snapshot.inferenceMs)} / ${ms(snapshot.inferenceP95Ms)}`}
+        />
+        <Row
+          label="Camera → audio (median / p95)"
+          value={
+            snapshot.pipelineMeasurable
+              ? `${ms(snapshot.pipelineMs)} / ${ms(snapshot.pipelineP95Ms)}`
+              : 'Chrome only'
+          }
+        />
         <Row label="Update rate" value={`${snapshot.updateHz} Hz`} />
-        <Row label="Audio output" value={ms(snapshot.outputLatencyMs)} hint="reported" />
+        <Row label="Audio output" value={ms(snapshot.outputLatencyMs)} />
       </div>
-
-      <p className="mt-3 text-[11px] leading-relaxed text-slate-500">
-        {verdict.note}
-        {!snapshot.pipelineMeasurable && (
-          <>
-            {' '}
-            This browser does not expose per-frame <code>captureTime</code>, so end-to-end
-            timing cannot be measured here. Use Chrome for the real number.
-          </>
-        )}
+      <p className="mt-2 text-sm text-neutral-500">
+        Camera and driver delays happen outside the browser, so the real total is a bit higher.
       </p>
-
-      <p className="mt-2 text-[11px] leading-relaxed text-slate-600">
-        These are the measurable segments only. Camera exposure and driver buffering sit
-        outside the browser's reach, so true glass-to-ear latency is higher than any single
-        figure above.
-      </p>
-    </section>
+    </div>
   );
 }

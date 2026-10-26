@@ -36,12 +36,11 @@ export class Deck {
     this.output = output;
   }
 
-  async load(file: File): Promise<void> {
-    const bytes = await file.arrayBuffer();
+  async load(bytes: ArrayBuffer, name: string): Promise<void> {
     // decodeAudioData detaches the ArrayBuffer it is given, so this instance
     // cannot be reused afterwards. That is fine — we never touch it again.
     this.buffer = await this.ctx.decodeAudioData(bytes);
-    this.trackName = file.name;
+    this.trackName = name;
     this.stop();
   }
 

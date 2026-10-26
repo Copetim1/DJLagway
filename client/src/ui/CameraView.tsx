@@ -63,7 +63,7 @@ export function CameraView({ videoRef, hands, mirrored, active }: Props) {
   }, [hands, mirrored, active]);
 
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-edge bg-black">
+    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-neutral-100">
       <video
         ref={videoRef}
         playsInline
@@ -73,8 +73,8 @@ export function CameraView({ videoRef, hands, mirrored, active }: Props) {
       />
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
       {!active && (
-        <div className="absolute inset-0 grid place-items-center text-sm text-slate-500">
-          Camera off
+        <div className="absolute inset-0 grid place-items-center text-sm text-neutral-500">
+          Camera is off
         </div>
       )}
     </div>
