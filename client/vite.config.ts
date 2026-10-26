@@ -6,6 +6,13 @@ import { defineConfig } from 'vitest/config'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    proxy: {
+      '/auth': 'http://localhost:5000',
+      '/tracks': 'http://localhost:5000',
+      '/mix-sessions': 'http://localhost:5000',
+    },
+  },
   test: {
     // The suite covers pure functions only. Webcam and Web Audio cannot be
     // meaningfully faked here — those are verified by hand, see README.

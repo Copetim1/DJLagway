@@ -27,3 +27,86 @@ body {
 .tnum {
   font-variant-numeric: tabular-nums;
 }
+
+/* Main page: blank white for now. */
+.main-page {
+  min-height: 100%;
+  background: #ffffff;
+}
+
+/* Login page */
+.login-page {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f5f7;
+  color: #1a1d23;
+  padding: 24px;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #d7dae0;
+  border-radius: 8px;
+  padding: 28px 24px;
+}
+
+.login-title {
+  margin: 0 0 20px;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.login-label {
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.login-input {
+  margin-bottom: 16px;
+  padding: 9px 10px;
+  font-size: 14px;
+  border: 1px solid #c3c7cf;
+  border-radius: 5px;
+  background: #fff;
+  color: #1a1d23;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #4a6cf7;
+}
+
+.login-button {
+  margin-top: 4px;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: #2b2f36;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background: #1a1d23;
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.login-error {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #c0392b;
+}
