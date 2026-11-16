@@ -50,7 +50,8 @@ type VideoWithRVFC = HTMLVideoElement & {
 async function headOk(url: string): Promise<boolean> {
   try {
     const res = await fetch(url, { method: 'HEAD' });
-    return res.ok;
+    const contentType = res.headers.get('content-type');
+    return res.ok && contentType !== null && !contentType.toLowerCase().startsWith('text/html');
   } catch {
     return false;
   }
