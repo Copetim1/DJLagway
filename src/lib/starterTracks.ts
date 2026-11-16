@@ -12,6 +12,7 @@ const STARTER_TRACKS = [
     artist: 'Alex Morgan',
     duration: 130,
     file: 'Alex Morgan - Boom Bap Old School Hip-Hop Beat.mp3',
+    source: 'STARTER',
   },
   {
     id: 'starter-phonk-for-video',
@@ -19,6 +20,7 @@ const STARTER_TRACKS = [
     artist: 'Lite Saturation',
     duration: 90,
     file: 'Lite Saturation - Phonk for Video.mp3',
+    source: 'STARTER',
   },
   {
     id: 'starter-clarity',
@@ -27,6 +29,7 @@ const STARTER_TRACKS = [
     album: 'A New Roar',
     duration: 105,
     file: 'Mr Smith - Clarity.mp3',
+    source: 'STARTER',
   },
   {
     id: 'starter-game',
@@ -35,6 +38,7 @@ const STARTER_TRACKS = [
     album: 'Songs',
     duration: 188,
     file: 'Play House - Game.mp3',
+    source: 'STARTER',
   },
   {
     id: 'starter-phonk-mix',
@@ -42,6 +46,7 @@ const STARTER_TRACKS = [
     artist: 'VibeDepot',
     duration: 157,
     file: 'VibeDepot - Phonk Mix.mp3',
+    source: 'STARTER',
   },
 ];
 

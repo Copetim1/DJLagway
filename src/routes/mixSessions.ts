@@ -9,11 +9,13 @@ const trackSummary = { select: { title: true, artist: true, artworkUrl: true } }
 // POST /mix-sessions - Save a completed mix session entry
 router.post('/', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const userId = req.user!.userId;
+    const { userId, role } = req.user!;
     const { trackAId, trackBId, effectUsed, startedAt, endedAt } = req.body;
 
-    if (typeof trackAId !== 'string' || typeof trackBId !== 'string') {
-      return res.status(400).json({ error: 'trackAId and trackBId are required' });
+    if (role === 'Beginner' && effectUsed && effectUsed.toLowerCase() !== 'lowpass') {
+      return res.status(403).json({
+        error: 'Beginners can only log sessions using the lowpass effect',
+      });
     }
 
     // Both decks may hold the same track, so compare against the distinct ids.

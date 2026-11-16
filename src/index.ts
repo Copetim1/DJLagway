@@ -5,6 +5,7 @@ import './lib/config'; // loads .env and exits if JWT_SECRET is missing
 import authRouter from './routes/auth';
 import tracksRouter from './routes/tracks';
 import mixSessionsRouter from './routes/mixSessions';
+import settingsRouter from './routes/settings'; // <-- 1. Import settings router
 import { seedStarterTracks, STARTER_TRACKS_URL_PATH } from './lib/starterTracks';
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(STARTER_TRACKS_URL_PATH, express.static(path.join(__dirname, '..', 'star
 app.use('/auth', authRouter);
 app.use('/tracks', tracksRouter);
 app.use('/mix-sessions', mixSessionsRouter);
+app.use('/settings', settingsRouter); // <-- 2. Mount settings router
 
 app.get('/', (req, res) => {
   res.send('DJLagway Backend API is running.');

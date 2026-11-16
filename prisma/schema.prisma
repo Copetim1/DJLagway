@@ -28,11 +28,12 @@ model Track {
   title String
   artist String
   album String?
-  duration Int         // duration in seconds
+  duration Int          // duration in seconds
   fileUrl String
   artworkUrl String?
-  ownerId String? // null = starter track, visible to every user
-  owner User? @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  source String       @default("LOCAL") // <-- Add this field
+  ownerId String?      // null = starter track, visible to every user
+  owner User?        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   mixSessionsAsTrackA MixSession[] @relation("TrackA")
   mixSessionsAsTrackB MixSession[] @relation("TrackB")
 }
@@ -51,8 +52,11 @@ model MixSession {
 }
 
 model UserSettings {
-  userId String @id
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  preferredEffect String @default("lowpass")
-  gestureSensitivity Float @default(1.0)
+  userId             String  @id
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  preferredEffect    String  @default("lowpass")
+  gestureSensitivity Float   @default(1.0)
+  swapHands          Boolean @default(false)
+  mirrored           Boolean @default(true)
+  smoothing          Float   @default(0.5)
 }

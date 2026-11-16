@@ -100,5 +100,30 @@ router.get('/me', requireAuth, async(req: AuthenticatedRequest, res: Response) =
     return res.status(500).json({ error: 'Internal server error fetching user info' });
   }
 });
+router.patch('/role', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user!.userId;
+  const { role } = req.body;
 
+  if (role !== 'Beginner' && role !== 'Experienced') {
+    return res.status(400).json({ error: 'Role must be either Beginner or Experienced' });
+  }
+
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { role },
+      select: { id: true, email: true, username: true, role: true },
+    });
+
+    const token = jwt.sign(
+      { userId: updatedUser.id, role: updatedUser.role },
+      process.env.JWT_SECRET!,
+      { expiresIn: '7d' }
+    );
+
+    return res.json({ user: updatedUser, token });
+  } catch (err) {
+    return res.status(500).json({ error: 'Failed to update user role' });
+  }
+});
 export default router;
