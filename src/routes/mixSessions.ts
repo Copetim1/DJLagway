@@ -1,5 +1,6 @@
 import { Router, Response } from 'express';
 import prisma from '../lib/prisma';
+import { isSupportedEffect } from '../lib/effects';
 import { requireAuth, AuthenticatedRequest } from '../middleware/auth';
 
 const router = Router();
@@ -10,9 +11,21 @@ const trackSummary = { select: { title: true, artist: true, artworkUrl: true } }
 router.post('/', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { userId, role } = req.user!;
+    if (!req.body || typeof req.body !== 'object' || Array.isArray(req.body)) {
+      return res.status(400).json({ error: 'Request body must be an object' });
+    }
+
     const { trackAId, trackBId, effectUsed, startedAt, endedAt } = req.body;
 
-    if (role === 'Beginner' && effectUsed && effectUsed.toLowerCase() !== 'lowpass') {
+    if (typeof trackAId !== 'string' || typeof trackBId !== 'string') {
+      return res.status(400).json({ error: 'trackAId and trackBId must be strings' });
+    }
+
+    if (effectUsed !== undefined && !isSupportedEffect(effectUsed)) {
+      return res.status(400).json({ error: 'effectUsed must be lowpass, highpass, or echo' });
+    }
+
+    if (role === 'Beginner' && effectUsed !== undefined && effectUsed !== 'lowpass') {
       return res.status(403).json({
         error: 'Beginners can only log sessions using the lowpass effect',
       });

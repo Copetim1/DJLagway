@@ -117,8 +117,8 @@ router.patch('/role', requireAuth, async (req: AuthenticatedRequest, res: Respon
 
     const token = jwt.sign(
       { userId: updatedUser.id, role: updatedUser.role },
-      process.env.JWT_SECRET!,
-      { expiresIn: '7d' }
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'] }
     );
 
     return res.json({ user: updatedUser, token });

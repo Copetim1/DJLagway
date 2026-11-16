@@ -31,7 +31,6 @@ model Track {
   duration Int          // duration in seconds
   fileUrl String
   artworkUrl String?
-  source String       @default("LOCAL") // <-- Add this field
   ownerId String?      // null = starter track, visible to every user
   owner User?        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   mixSessionsAsTrackA MixSession[] @relation("TrackA")
