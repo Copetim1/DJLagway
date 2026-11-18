@@ -1,10 +1,11 @@
 import { useState, type FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 
-type Props = {
-  onLoggedIn: () => void;
-};
+export function Login() {
+  const { logIn } = useAuth();
+  const navigate = useNavigate();
 
-export function Login({ onLoggedIn }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -29,8 +30,8 @@ export function Login({ onLoggedIn }: Props) {
         return;
       }
 
-      localStorage.setItem('token', data.token);
-      onLoggedIn();
+      logIn(data.token);
+      navigate('/mix', { replace: true });
     } catch {
       setError('Could not reach the server. Is it running?');
     } finally {
@@ -74,6 +75,10 @@ export function Login({ onLoggedIn }: Props) {
         <button type="submit" className="login-button" disabled={submitting}>
           {submitting ? 'Signing in…' : 'Sign in'}
         </button>
+
+        <p className="login-switch">
+          No account? <Link to="/register">Create one</Link>
+        </p>
       </form>
     </div>
   );

@@ -1,11 +1,9 @@
 import DjSpike from './DjSpike';
 
-interface Props {
-  onLogOut: () => void;
-  /** Called while the user is DJing without touching the mouse or keyboard. */
-  onActivity: () => void;
-}
-
-export function MainPage({ onLogOut, onActivity }: Props) {
-  return <DjSpike onLogOut={onLogOut} onActivity={onActivity} />;
+/**
+ * Legacy wrapper. Routing now sends /mix straight to <DjSpike />; this is kept
+ * only so any stray imports keep compiling. Safe to delete once nothing uses it.
+ */
+export function MainPage() {
+  return <DjSpike />;
 }

@@ -96,3 +96,58 @@ body {
   font-size: 13px;
   color: #c0392b;
 }
+
+.login-switch {
+  margin: 14px 0 0;
+  font-size: 13px;
+  text-align: center;
+  color: #4b5563;
+}
+
+.login-switch a {
+  color: #4a6cf7;
+  text-decoration: none;
+}
+
+.login-switch a:hover {
+  text-decoration: underline;
+}
+
+/* Register role selector */
+.role-select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.role-option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid #c3c7cf;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.role-option-active {
+  border-color: #4a6cf7;
+  background: #f0f3ff;
+}
+
+.role-option input {
+  grid-row: span 2;
+}
+
+.role-option-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.role-option-desc {
+  grid-column: 2;
+  font-size: 12px;
+  color: #6b7280;
+}
