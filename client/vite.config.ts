@@ -18,6 +18,7 @@ export default defineConfig(({ mode }) => {
         '/tracks': api,
         '/mix-sessions': api,
         '/starter-tracks': api,
+        '/uploads': api,
       },
     },
     test: {

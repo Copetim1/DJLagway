@@ -7,12 +7,14 @@ import tracksRouter from './routes/tracks';
 import mixSessionsRouter from './routes/mixSessions';
 import settingsRouter from './routes/settings';
 import { STARTER_TRACKS_URL_PATH } from './lib/starterTracks';
+import { UPLOADS_DIR, UPLOADS_URL_PATH } from './lib/uploads';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(STARTER_TRACKS_URL_PATH, express.static(path.join(__dirname, '..', 'starter-tracks')));
+app.use(UPLOADS_URL_PATH, express.static(UPLOADS_DIR));
 
 app.use('/auth', authRouter);
 app.use('/tracks', tracksRouter);

@@ -41,6 +41,21 @@ Every user sees these songs alongside their own uploads. The MP3s live in
 To add a song: put the MP3 in `starter-tracks/`, add an entry to the list with a new id, then
 restart the server. Never change an existing id, because mix sessions refer to tracks by id.
 
+## Uploaded tracks
+
+Logged-in users can add their own MP3 or WAV files (20MB max). Files are saved under
+`uploads/` (git-ignored; set `UPLOADS_DIR` in `.env` to store them elsewhere) and served at
+`/uploads/<id>.<ext>`. The duration, and the title and artist when not given, are read from
+the file with `music-metadata`.
+
+| Request | What it does |
+| --- | --- |
+| `POST /tracks` (or `/tracks/upload`) | Multipart form: `file`, plus optional `title` and `artist`. Returns the new track (201). 400 for a wrong or unreadable file, 413 over 20MB |
+| `GET /tracks/:id` | One of your tracks or a starter track. 404 for anyone else's |
+| `DELETE /tracks/:id` | Deletes your track and its file (204). Starter tracks are 403. Mix sessions that used the track are deleted with it |
+
+All three need an `Authorization: Bearer <token>` header.
+
 `.env.example`'s `DATABASE_URL` matches the credentials in `docker-compose.yml`. Change it if
 you use a different Postgres.
 
