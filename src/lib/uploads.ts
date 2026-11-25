@@ -23,6 +23,8 @@ const ALLOWED_TYPES: Record<string, string[]> = {
   '.wav': ['audio/wav', 'audio/x-wav', 'audio/wave', 'audio/vnd.wave'],
 };
 
+const GENERIC_TYPES = ['application/octet-stream']
+
 const upload = multer({
   storage: multer.diskStorage({
     destination: UPLOADS_DIR,
@@ -32,7 +34,7 @@ const upload = multer({
   limits: { fileSize: MAX_UPLOAD_BYTES, files: 1 },
   fileFilter: (_req, file, cb) => {
     const allowed = ALLOWED_TYPES[path.extname(file.originalname).toLowerCase()];
-    cb(null, allowed?.includes(file.mimetype) ?? false);
+    cb(null, !!allowed && (allowed.includes(file.mimetype) || GENERIC_TYPES.includes(file.mimetype)));
   },
 });
 

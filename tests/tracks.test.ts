@@ -153,6 +153,20 @@ describe('Track uploads', () => {
     expect(res.body).toMatchObject({ title: 'Sent After File', artist: 'Library Page', duration: 1 });
   });
 
+    it('accepts an MP3 or WAV labelled application/octet-stream, as curl sends it', async () => {
+    const res = await upload(ownerToken).attach('file', silentWav(1), {
+      filename: 'from-curl.wav',
+      contentType: 'application/octet-stream',
+    });
+    expect(res.status).toBe(201);
+
+    const notAudio = await upload(ownerToken).attach('file', Buffer.from('hello'), {
+      filename: 'notes.txt',
+      contentType: 'application/octet-stream',
+    });
+    expect(notAudio.status).toBe(400);
+  });
+
   it('falls back to the original filename for the title', async () => {
     const res = await upload(ownerToken).attach('file', silentWav(1), {
       filename: 'Untitled Loop.wav',
